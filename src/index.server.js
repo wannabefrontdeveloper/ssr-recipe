@@ -2,6 +2,7 @@ import ReactDOMServer from "react-dom/server";
 import express from "express";
 import { StaticRouter } from "react-router-dom/server";
 import App from "./App";
+import path from "path";
 
 const app = express();
 
@@ -19,6 +20,11 @@ const serverRender = (req, res, next) => {
   res.send(root); // 클라이언트에게 결과물을 응답합니다.
 };
 
+const serve = express.static(path.resolve("./build"), {
+  index: false, // "/" 경로에서 index.html을 보여 주지 않도록 설정
+});
+
+app.use(serve); // 순서가 중요합니다. serverRender 전에 위치해야합니다.
 app.use(serverRender);
 
 // 5000번 포트로 서버를 가동합니다.
