@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
+import { thunk } from "redux-thunk";
 import rootReducer from "./modules";
 import PreloadContext from "./lib/PreloadContext";
 
