@@ -11,7 +11,7 @@ import rootReducer, { rootSaga } from "./modules";
 import PreloadContext from "./lib/PreloadContext";
 import createSagaMiddleware from "redux-saga";
 import { END } from "redux-saga";
-import { ChunkExtractor, ChunkExtractorManager } from "@loadable/sever";
+import { ChunkExtractor, ChunkExtractorManager } from "@loadable/server";
 
 const statsFile = path.resolve("./build/loadable-stats.json");
 
