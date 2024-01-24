@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { thunk } from "redux-thunk";
 import rootReducer, { rootSaga } from "./modules";
 import createSagaMiddleware from "redux-saga";
+import { loadableReady } from "@loadable/component";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -20,10 +21,20 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
-);
+
+async function render() {
+  // 프로덕션 환경에서는 loadbleReady를 호출하여 필요한 데이터가 로드될 때까지 대기합니다.
+  if (process.env.NODE_ENV === "production") {
+    await loadableReady();
+  }
+
+  root.render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  );
+}
+
+render();
