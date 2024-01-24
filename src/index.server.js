@@ -15,11 +15,6 @@ import { ChunkExtractor, ChunkExtractorManager } from "@loadable/server";
 
 const statsFile = path.resolve("./build/loadable-stats.json");
 
-// asset-manifest.json에서 파일 경로들을 조회합니다.
-const manifest = JSON.parse(
-  fs.readFileSync(path.resolve("./build/asset-manifest.json"), "utf8")
-);
-
 function createPage(root, tags) {
   return `<!DOCTYPE html>
   <html lang="en">
@@ -56,6 +51,8 @@ const serverRender = async (req, res, next) => {
     rootReducer,
     applyMiddleware(thunk, sagaMiddleware)
   );
+
+  sagaMiddleware.run(rootSaga);
 
   const sagaPromise = sagaMiddleware.run(rootSaga).toPromise();
 
@@ -96,7 +93,7 @@ const serverRender = async (req, res, next) => {
     links: extractor.getLinkTags(),
     styles: extractor.getStyleTags(),
   };
-  res.send(createPage(root, stateScript)); // 클라이언트에게 결과물을 응답합니다.
+  res.send(createPage(root, tags)); // 클라이언트에게 결과물을 응답합니다.
 };
 
 const serve = express.static(path.resolve("./build"), {
